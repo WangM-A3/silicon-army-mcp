@@ -1,0 +1,258 @@
+{
+  "@context": "https://modelcontextprotocol.io/schema/2025-03-26",
+  "protocol_version": "2025-03-26",
+  "name": "SiliconArmy Foreign Trade Agent",
+  "version": "1.0.0",
+  "description": "外贸硅基军团的 MCP Server，提供客户发现、邮件触达、WhatsApp营销、海关数据查询等能力",
+  "publisher": {
+    "name": "SiliconArmy",
+    "url": "https://siliconarmy.com"
+  },
+  "capabilities": {
+    "resources": true,
+    "tools": true,
+    "prompts": false
+  },
+  "tools": [
+    {
+      "name": "discover_customers",
+      "title": "客户发现",
+      "description": "发现潜在外贸客户，支持按关键词和市场筛选",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string",
+            "description": "产品关键词，如 LED lighting"
+          },
+          "market": {
+            "type": "string",
+            "description": "目标市场，如 德国"
+          },
+          "product_info": {
+            "type": "string",
+            "description": "产品描述信息"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "返回数量上限",
+            "default": 10
+          }
+        },
+        "required": ["keyword", "market"]
+      }
+    },
+    {
+      "name": "search_company_info",
+      "title": "公司信息查询",
+      "description": "查询公司详细信息",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "company_name": {
+            "type": "string",
+            "description": "公司名称"
+          }
+        },
+        "required": ["company_name"]
+      }
+    },
+    {
+      "name": "send_email",
+      "title": "发送开发信",
+      "description": "发送外贸开发邮件",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "to_address": {
+            "type": "string",
+            "description": "收件人邮箱"
+          },
+          "subject": {
+            "type": "string",
+            "description": "邮件主题"
+          },
+          "content": {
+            "type": "string",
+            "description": "邮件内容，支持HTML"
+          },
+          "template_type": {
+            "type": "string",
+            "enum": ["dev_letter", "follow_up", "product_intro"],
+            "description": "邮件模板类型",
+            "default": "dev_letter"
+          }
+        },
+        "required": ["to_address", "subject", "content"]
+      }
+    },
+    {
+      "name": "batch_send_emails",
+      "title": "批量发送邮件",
+      "description": "批量发送外贸开发邮件",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "recipients": {
+            "type": "array",
+            "description": "收件人列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "address": {"type": "string"},
+                "name": {"type": "string"}
+              }
+            }
+          },
+          "subject": {"type": "string"},
+          "content": {"type": "string"},
+          "template_type": {
+            "type": "string",
+            "enum": ["dev_letter", "follow_up", "product_intro"],
+            "default": "dev_letter"
+          }
+        },
+        "required": ["recipients", "subject", "content"]
+      }
+    },
+    {
+      "name": "get_email_tracking",
+      "title": "邮件追踪",
+      "description": "获取邮件发送状态和追踪数据",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "email_id": {
+            "type": "string",
+            "description": "邮件ID"
+          }
+        },
+        "required": ["email_id"]
+      }
+    },
+    {
+      "name": "send_whatsapp_message",
+      "title": "发送WhatsApp消息",
+      "description": "发送WhatsApp即时消息",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "phone_number": {
+            "type": "string",
+            "description": "电话号码，格式：whatsapp:+国家代码+号码"
+          },
+          "message": {
+            "type": "string",
+            "description": "消息内容"
+          },
+          "message_type": {
+            "type": "string",
+            "enum": ["text", "image", "document"],
+            "default": "text"
+          }
+        },
+        "required": ["phone_number", "message"]
+      }
+    },
+    {
+      "name": "send_whatsapp_product_card",
+      "title": "发送产品卡片",
+      "description": "发送WhatsApp产品信息卡片",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "phone_number": {"type": "string"},
+          "product_name": {"type": "string"},
+          "product_image": {"type": "string"},
+          "price": {"type": "string"},
+          "description": {"type": "string"}
+        },
+        "required": ["phone_number", "product_name"]
+      }
+    },
+    {
+      "name": "get_whatsapp_message_status",
+      "title": "WhatsApp消息状态",
+      "description": "获取WhatsApp消息的发送状态",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "message_id": {"type": "string"}
+        },
+        "required": ["message_id"]
+      }
+    },
+    {
+      "name": "query_import_data",
+      "title": "进口海关数据",
+      "description": "查询指定HS编码的进口数据",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "hs_code": {
+            "type": "string",
+            "description": "HS编码"
+          },
+          "country": {
+            "type": "string",
+            "description": "目的国"
+          },
+          "time_range": {
+            "type": "string",
+            "enum": ["last_month", "last_quarter", "last_year"],
+            "default": "last_year"
+          }
+        },
+        "required": ["hs_code", "country"]
+      }
+    },
+    {
+      "name": "query_export_data",
+      "title": "出口海关数据",
+      "description": "查询指定HS编码的出口数据",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "hs_code": {"type": "string"},
+          "country": {"type": "string"},
+          "time_range": {
+            "type": "string",
+            "enum": ["last_month", "last_quarter", "last_year"],
+            "default": "last_year"
+          }
+        },
+        "required": ["hs_code", "country"]
+      }
+    },
+    {
+      "name": "find_suppliers_by_product",
+      "title": "供应商查找",
+      "description": "按产品关键词查找供应商",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "product_keyword": {"type": "string"},
+          "country": {
+            "type": "string",
+            "default": "China"
+          }
+        },
+        "required": ["product_keyword"]
+      }
+    }
+  ],
+  "resources": [
+    {
+      "uriPattern": "template:///{template_type}",
+      "name": "Email Template",
+      "description": "获取邮件模板",
+      "mimeType": "text/plain"
+    },
+    {
+      "uriPattern": "guide:///{guide_type}",
+      "name": "User Guide",
+      "description": "获取用户指南",
+      "mimeType": "text/markdown"
+    }
+  ]
+}
