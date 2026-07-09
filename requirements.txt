@@ -1,0 +1,7 @@
+# MCP Server 依赖
+mcp[cli]>=1.0.0
+fastapi>=0.100.0
+uvicorn>=0.23.0
+
+# 外贸硅基军团核心
+silicon-army>=1.0.0
