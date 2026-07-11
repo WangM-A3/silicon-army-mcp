@@ -1,7 +1,13 @@
-# MCP Server 依赖
+# MCP Server 核心依赖
 mcp[cli]>=1.0.0
 fastapi>=0.100.0
 uvicorn>=0.23.0
 
-# 外贸硅基军团核心
-silicon-army>=1.0.0
+# HTTP 客户端 (真实API调用)
+httpx>=0.25.0
+
+# 邮件发送 (Resend API)
+resend>=2.0.0
+
+# Google Custom Search (可选，客户发现功能)
+# google-api-python-client>=2.100.0
